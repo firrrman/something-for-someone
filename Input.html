@@ -3,47 +3,292 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/outputTailwind.css" />
     <title>Masukkan Nama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes bounce-gentle {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(255, 134, 202, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(255, 128, 200, 0.8);
+        }
+      }
+      .bounce-gentle {
+        animation: bounce-gentle 2s ease-in-out infinite;
+      }
+      .shake {
+        animation: shake 0.5s ease-in-out;
+      }
+      .pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+      .typing::after {
+        content: "|";
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body
-    class="bg-black text-white flex items-center justify-center min-h-screen"
+    class="bg-black to-pink-900 text-white px-5 flex items-center justify-center min-h-screen font-sans overflow-hidden"
   >
+    <!-- Background particles -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div
+        class="absolute top-1/4 left-1/4 w-2 h-2 bg-pink-400 rounded-full animate-ping opacity-70"
+      ></div>
+      <div
+        class="absolute top-3/4 right-1/4 w-3 h-3 bg-pink-400 rounded-full animate-pulse opacity-60"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/3 w-1 h-1 bg-blue-400 rounded-full animate-bounce opacity-80"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/3 w-2 h-2 bg-indigo-400 rounded-full animate-ping opacity-50"
+      ></div>
+    </div>
+
     <div
-      class="bg-pink-300 text-black p-10 rounded-2xl shadow-lg text-center w-80"
+      class="relative z-10 bg-white/10 backdrop-blur-lg text-white p-8 rounded-3xl shadow-2xl w-[450px] text-center space-y-6 border border-white/20 transition-all duration-500 hover:shadow-pink-500/20 hover:shadow-2xl pulse-glow"
     >
-      <h1 class="text-2xl font-bold mb-6">Masukkan Nama Kamu</h1>
-      <input
-        type="text"
-        id="nama"
-        placeholder="Masukkan nama anda"
-        class="w-full px-4 py-2 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 mb-4"
-      />
+      <!-- Header dengan animasi -->
+      <div class="space-y-2">
+        <h1
+          class="text-3xl my-10 font-bold bg-gradient-to-r from-pink-500 to-pink-400 bg-clip-text text-transparent bounce-gentle"
+        >
+          Masukkan Nama Kamu
+        </h1>
+      </div>
+
+      <!-- Input dengan efek hover yang smooth -->
+      <div class="relative">
+        <input
+          type="text"
+          id="nama"
+          placeholder="Masukkan nama kamu..."
+          class="w-full px-4 py-3 rounded-xl border-2 border-pink-300/30 bg-white/10 backdrop-blur-sm text-white placeholder-gray-300 focus:outline-none focus:border-pink-400 focus:ring-4 focus:ring-pink-400/30 transition-all duration-300 hover:border-pink-300/50"
+          onkeydown="handleKeyPress(event)"
+          oninput="clearError()"
+        />
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+          <span id="inputIcon" class="text-gray-400 transition-all duration-300"
+            >✨</span
+          >
+        </div>
+      </div>
+
+      <!-- Button dengan efek hover yang menarik -->
       <button
         onclick="cekNama()"
-        class="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition"
+        id="submitBtn"
+        class="w-full bg-gradient-to-r from-pink-300 to-pink-400 text-white font-semibold py-3 rounded-xl transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-pink-500/50"
       >
-        Lanjut
+        <span id="btnText">Submit</span>
       </button>
-      <p class="text-red-600 mt-4 text-sm font-medium" id="pesan"></p>
+
+      <!-- Area pesan error dengan animasi -->
+      <div
+        id="pesanContainer"
+        class="min-h-[24px] flex items-center justify-center"
+      >
+        <p
+          class="text-red-300 text-sm font-medium transition-all duration-300"
+          id="pesan"
+        ></p>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="loadingIndicator" class="hidden">
+        <div class="flex items-center justify-center space-x-2">
+          <div class="w-2 h-2 bg-pink-400 rounded-full animate-bounce"></div>
+          <div
+            class="w-2 h-2 bg-pink-400 rounded-full animate-bounce"
+            style="animation-delay: 0.1s"
+          ></div>
+          <div
+            class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+            style="animation-delay: 0.2s"
+          ></div>
+        </div>
+        <p class="text-pink-300 text-sm mt-2 typing">Memproses</p>
+      </div>
     </div>
 
     <script>
-      function cekNama() {
-        const nama = document.getElementById("nama").value.trim().toLowerCase();
-        const pesan = document.getElementById("pesan");
+      let attemptCount = 0;
 
-        if (nama === "") {
-          pesan.textContent =
-            "Eh, jangan kosong dong... komputer bisa sedih 😢";
-        } else if (nama === "firman") {
-          pesan.textContent = "";
-          window.location.href = "index.html"; // ganti sesuai halaman tujuan
-        } else {
-          pesan.textContent =
-            "Waduh, cuma yang bernama Firman yang boleh masuk! 😜";
+      const funnyMessages = [
+        "Eh, jangan kosong dong...",
+        "Isi dulu dong, masa nama kamu 'kosong'?",
+        "Hayoo, nama kamu apa? Jangan malu-malu!",
+        "Psst... yang beneran aja, jangan pura-pura lupa ya!",
+      ];
+
+      const wrongNameMessages = [
+        "Waduh, masa nama kamu lupa sih?",
+        "Ehh salah tuh!",
+        "Nice try! Tapi bukan kamu orangnya",
+        "Hmm... salah mulu",
+        "Oops! Kayaknya kamu salah alamat nih",
+        "Siapa kamu? Kok salah terus?",
+        "Eh, identitas palsu nih kayaknya",
+        "Maaf ya, VIP area khusus kamu only!",
+        "Kamu yakin nama kamu itu? Kok beda sama yang di sistem",
+      ];
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          cekNama();
         }
       }
+
+      function clearError() {
+        const pesan = document.getElementById("pesan");
+        const container = document.getElementById("pesanContainer");
+
+        pesan.textContent = "";
+        container.classList.remove("shake");
+
+        // Update icon based on input
+        const input = document.getElementById("nama");
+        const icon = document.getElementById("inputIcon");
+
+        if (input.value.trim()) {
+          icon.textContent = "🎯";
+          icon.classList.add("text-green-400");
+        } else {
+          icon.textContent = "✨";
+          icon.classList.remove("text-green-400");
+        }
+      }
+
+      function showLoading() {
+        const btn = document.getElementById("submitBtn");
+        const loading = document.getElementById("loadingIndicator");
+        const btnText = document.getElementById("btnText");
+
+        btnText.textContent = "Mengecek...";
+        btn.classList.add("opacity-75", "cursor-not-allowed");
+        loading.classList.remove("hidden");
+      }
+
+      function hideLoading() {
+        const btn = document.getElementById("submitBtn");
+        const loading = document.getElementById("loadingIndicator");
+        const btnText = document.getElementById("btnText");
+
+        btnText.textContent = "Cek Yuk! 🚀";
+        btn.classList.remove("opacity-75", "cursor-not-allowed");
+        loading.classList.add("hidden");
+      }
+
+      function showError(message) {
+        const pesan = document.getElementById("pesan");
+        const container = document.getElementById("pesanContainer");
+
+        pesan.textContent = message;
+        container.classList.add("shake");
+
+        // Remove shake class after animation
+        setTimeout(() => {
+          container.classList.remove("shake");
+        }, 500);
+
+        // Update input icon
+        const icon = document.getElementById("inputIcon");
+        icon.textContent = "❌";
+        icon.classList.remove("text-green-400");
+        icon.classList.add("text-red-400");
+      }
+
+      function cekNama() {
+        const nama = document.getElementById("nama").value.trim();
+        const namaLower = nama.toLowerCase();
+
+        // Show loading
+        showLoading();
+
+        // Simulate processing time
+        setTimeout(() => {
+          hideLoading();
+
+          if (nama === "") {
+            const randomMessage =
+              funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+            showError(randomMessage);
+          } else if (namaLower === "dian anggraini") {
+            // Success animation
+            const btn = document.getElementById("submitBtn");
+            const btnText = document.getElementById("btnText");
+
+            btnText.textContent = "Berhasil! 🎉";
+            btn.classList.add("bg-green-500", "hover:bg-green-600");
+
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 1000);
+          } else {
+            attemptCount++;
+            let message;
+
+            if (attemptCount >= 3) {
+              message = `Udah ${attemptCount}x salah nih... Nama kamu lupa ya? 😅`;
+            } else {
+              message =
+                wrongNameMessages[
+                  Math.floor(Math.random() * wrongNameMessages.length)
+                ];
+            }
+
+            showError(message);
+          }
+        }, 1000);
+      }
+
+      // Add some interactive effects
+      document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("nama");
+
+        input.addEventListener("focus", function () {
+          this.parentElement.classList.add("scale-105");
+        });
+
+        input.addEventListener("blur", function () {
+          this.parentElement.classList.remove("scale-105");
+        });
+      });
     </script>
   </body>
 </html>

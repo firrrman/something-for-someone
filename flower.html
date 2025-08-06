@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <!-- Document Title -->
-    <title>FLOWERS</title>
+    <title>Happy Birthday</title>
   </head>
 
   <body class="not-loaded">
@@ -328,6 +328,68 @@
 
     <!-- Title -->
     <h1 class="title"><span id="title"></span></h1>
+
+    <style>
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 30px;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        opacity: 0;
+        transition: opacity 1s ease;
+        pointer-events: none;
+      }
+      .modal.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .pesan {
+        width: 500px;
+        background-color: black;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .pesan h2 {
+        margin-bottom: 20px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 2rem;
+      }
+
+      .pesan button {
+        background-color: #ff69b4;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+      }
+
+      .pesan button:hover {
+        transform: scale(1.08);
+      }
+    </style>
+
+    <div class="modal">
+      <div class="pesan">
+        <h2>Lanjut Baca Pesan</h2>
+        <button onclick="window.location.href='pesan.html'">Lanjut</button>
+      </div>
+    </div>
   </body>
 </html>
 

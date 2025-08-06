@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday</title>
+    <link rel="stylesheet" href="./css/outputTailwind.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        background-color: black;
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 90%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        padding: 50px;
+      }
+
+      .modal button {
+        margin-top: 1rem;
+        padding: 10px 20px;
+        background-color: #ff69b4;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .credit-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .credit-container {
+        position: absolute;
+        width: 100%;
+        color: white;
+        text-align: center;
+        font-size: 1.2rem;
+        line-height: 2;
+        padding: 2rem;
+        /* Ganti tinggi cukup besar agar scroll smooth panjang */
+        top: 100%;
+        animation: scrollUpSmooth 120s linear forwards;
+      }
+
+      @keyframes scrollUpSmooth {
+        from {
+          top: 100%;
+        }
+        to {
+          top: -300%;
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <h2>🎉 Selamat Ulang Tahun 🎉</h2>
+        <p>Pesan panjang buat kamu 😊</p>
+        <button onclick="mulaiCredit()">Baca Pesannya</button>
+      </div>
+    </div>
+
+    <audio id="audio" src="./music/rumahkerumah.mp3" autoplay></audio>
+
+    <!-- Credit Message (Looping) -->
+    <div class="credit-wrapper hidden" id="creditWrapper">
+      <div class="credit-container" id="credit">
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Selamat ulang tahun! 🎂
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Terima kasih telah menjadi cahaya dalam hidup banyak orang.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Hari ini adalah perayaan atas kelahiran seseorang yang luar biasa.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Semoga setiap langkahmu selalu diberkahi dengan kebahagiaan dan
+          kesuksesan.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Di dunia yang seringkali penuh tantangan, kehadiranmu membawa
+          kehangatan dan harapan.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Kamu pantas mendapatkan cinta, dukungan, dan semua hal baik dalam
+          hidup.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Semoga setiap impian yang kamu semogakan menjadi nyata satu per satu.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Jangan pernah meragukan dirimu sendiri, karena kamu jauh lebih kuat
+          dari yang kamu kira.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Teruslah menebar kebaikan dan inspirasi untuk orang-orang di
+          sekitarmu.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Di setiap langkah yang kamu ambil, yakinlah bahwa banyak orang yang
+          mendoakan yang terbaik untukmu.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Hari ini, kamu lebih dari sekadar bertambah usia—kamu bertambah
+          bijaksana, kuat, dan berharga.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Selamat ulang tahun sekali lagi. Jadilah versi terbaik dari dirimu
+          sendiri setiap hari.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Kita semua beruntung memiliki seseorang seperti kamu di dunia ini.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Semoga hatimu selalu dipenuhi oleh damai dan syukur.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          Dan ingat, kamu tidak pernah sendiri. Kamu dicintai lebih dari yang
+          kamu tahu.
+        </p>
+        <br /><br />
+        <p
+          class="sm:text-2xl"
+          style="font-family: 'Courier New', Courier, monospace"
+        >
+          🎁🌟💖🌈✨
+        </p>
+      </div>
+    </div>
+
+    <style>
+      #hbdText {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+      #hbdText.show {
+        opacity: 1;
+      }
+    </style>
+
+    <!-- H1 Happy Birthday muncul setelah 10 detik -->
+    <div
+      id="hbdText"
+      class="fixed inset-0 flex justify-center items-center z-50"
+    >
+      <h1
+        style="
+          font-size: 5rem;
+          color: white;
+          font-family: 'Courier New', Courier, monospace;
+        "
+      >
+        🎉 Happy Birthday 🎉
+      </h1>
+    </div>
+
+    <script>
+      function mulaiCredit() {
+        document.getElementById("modal").classList.add("hidden");
+        document.getElementById("creditWrapper").classList.remove("hidden");
+
+        const audio = document.getElementById("audio");
+        audio.play().catch((error) => {
+          console.log("Audio tidak bisa diputar otomatis:", error);
+        });
+
+        // Setelah 10 detik tampilkan H1 Happy Birthday
+        setTimeout(() => {
+          const hbd = document.getElementById("hbdText");
+          hbd.classList.remove("hidden");
+          hbd.classList.add("show");
+        }, 100000);
+      }
+    </script>
+  </body>
+</html>

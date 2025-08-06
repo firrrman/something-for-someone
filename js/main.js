@@ -2,7 +2,7 @@ onload = () => {
   const c = setTimeout(() => {
     document.body.classList.remove("not-loaded");
 
-    const titles = "HAPPY BIIRTHDAY TO YOU".split("");
+    const titles = "HAPPY BIRTHDAY TO YOU".split("");
     const titleElement = document.getElementById("title");
     let index = 0;
 
@@ -19,3 +19,10 @@ onload = () => {
     clearTimeout(c);
   }, 500);
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const modal = document.querySelector(".modal");
+    modal.classList.add("show");
+  }, 15000); // 10000 ms = 10 detik
+});
